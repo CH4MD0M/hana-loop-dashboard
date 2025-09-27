@@ -1,0 +1,19 @@
+.mobileContainer {
+  display: block;
+}
+
+@media (min-width: 1200px) {
+  .mobileContainer {
+    display: none;
+  }
+}
+
+.desktopContainer {
+  display: none;
+}
+
+@media (min-width: 1074px) {
+  .desktopContainer {
+    display: block;
+  }
+}
