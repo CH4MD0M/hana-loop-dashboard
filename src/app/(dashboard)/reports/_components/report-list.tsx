@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { Post } from '@/types/Post';
+import { Report } from '@/types/Report';
 
 import { useModalStore } from '@/store/use-modal-store';
 import { getCompanyName } from '@/utils/report-list-utils';
@@ -9,11 +9,11 @@ import ReportModal from './report-modal';
 import styles from './report-list.module.css';
 
 interface ReportListProps {
-  reportListData: Post[];
-  onPostUpdated: (updatedPost: Post) => void;
+  reportListData: Report[];
+  onReortUpdated: (updatedReport: Report) => void;
 }
 
-const ReportList = ({ reportListData, onPostUpdated }: ReportListProps) => {
+const ReportList = ({ reportListData, onReortUpdated }: ReportListProps) => {
   const { openModal } = useModalStore(['openModal']);
 
   const formatDate = (dateString: string) => {
@@ -25,9 +25,13 @@ const ReportList = ({ reportListData, onPostUpdated }: ReportListProps) => {
     return name.charAt(0);
   };
 
-  const handleEditClick = (post: Post, event: React.MouseEvent) => {
+  const handleEditClick = (report: Report, event: React.MouseEvent) => {
     event.stopPropagation();
-    openModal('edit-post', <ReportModal mode="edit" post={post} onPostUpdated={onPostUpdated} />);
+
+    openModal(
+      'edit-report',
+      <ReportModal mode="edit" report={report} onReportUpdated={onReortUpdated} />
+    );
   };
 
   return (
@@ -44,16 +48,16 @@ const ReportList = ({ reportListData, onPostUpdated }: ReportListProps) => {
 
       {/* Content */}
       <div className={styles.content}>
-        {reportListData.map((post) => {
-          const companyName = getCompanyName(post.resourceUid);
+        {reportListData.map((report) => {
+          const companyName = getCompanyName(report.resourceUid);
 
           return (
-            <div key={post.id} className={styles.row}>
+            <div key={report.id} className={styles.row}>
               <div className={styles.rowGrid}>
                 {/* 제목 */}
                 <div className={styles.titleSection}>
-                  <h3 className={styles.title}>{post.title}</h3>
-                  <p className={styles.description}>{post.content}</p>
+                  <h3 className={styles.title}>{report.title}</h3>
+                  <p className={styles.description}>{report.content}</p>
                 </div>
 
                 {/* 작성자 */}
@@ -64,12 +68,12 @@ const ReportList = ({ reportListData, onPostUpdated }: ReportListProps) => {
 
                 {/* 작성일 */}
                 <div className={styles.dateSection}>
-                  <span className={styles.date}>{formatDate(post.dateTime)}</span>
+                  <span className={styles.date}>{formatDate(report.dateTime)}</span>
                 </div>
 
                 {/* 관리 */}
                 <div className={styles.editSection}>
-                  <button onClick={(e) => handleEditClick(post, e)} className={styles.editButton}>
+                  <button onClick={(e) => handleEditClick(report, e)} className={styles.editButton}>
                     수정
                   </button>
                 </div>

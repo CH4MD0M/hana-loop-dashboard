@@ -5,16 +5,16 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { ModalId } from '@/types/Modal';
-import { Post } from '@/types/Post';
+import { Report } from '@/types/Report';
 import { useModalStore } from '@/store/use-modal-store';
 
 import { companies } from '@/lib/data/companies';
-import { createOrUpdatePost } from '@/lib/api';
+import { createOrUpdateReport } from '@/lib/api';
 import {
-  postFormSchema,
-  PostFormData,
-  getDefaultPostValues,
-  transformToPostData,
+  reportFormSchema,
+  type ReportFormData,
+  getDefaultReportValues,
+  transformToReportData,
 } from '@/lib/schemas/reports';
 
 import { BaseModal } from '@/components/modal/base-modal';
@@ -26,25 +26,25 @@ import styles from './report-modal.module.css';
 
 interface ReportModalProps {
   mode: 'create' | 'edit';
-  post?: Post;
-  onPostCreated?: (newPost: Post) => void;
-  onPostUpdated?: (updatedPost: Post) => void;
+  report?: Report;
+  onReportCreated?: (newReport: Report) => void;
+  onReportUpdated?: (updatedReport: Report) => void;
   closeOnlyByAction?: boolean;
 }
 
 const ReportModal = ({
   mode,
-  post,
-  onPostCreated,
-  onPostUpdated,
+  report,
+  onReportCreated,
+  onReportUpdated,
   closeOnlyByAction = true,
 }: ReportModalProps) => {
   const { openModal, closeModal } = useModalStore(['openModal', 'closeModal']);
-  const modalName: ModalId = mode === 'create' ? 'create-post' : 'edit-post';
+  const modalName: ModalId = mode === 'create' ? 'create-report' : 'edit-report';
 
-  const methods = useForm<PostFormData>({
-    resolver: zodResolver(postFormSchema),
-    defaultValues: getDefaultPostValues(),
+  const methods = useForm<ReportFormData>({
+    resolver: zodResolver(reportFormSchema),
+    defaultValues: getDefaultReportValues(),
     mode: 'onChange',
   });
 
@@ -55,16 +55,16 @@ const ReportModal = ({
   } = methods;
 
   useEffect(() => {
-    if (mode === 'edit' && post) {
+    if (mode === 'edit' && report) {
       reset({
-        resourceUid: post.resourceUid,
-        title: post.title,
-        content: post.content,
+        resourceUid: report.resourceUid,
+        title: report.title,
+        content: report.content,
       });
     } else if (mode === 'create') {
-      reset(getDefaultPostValues());
+      reset(getDefaultReportValues());
     }
-  }, [mode, post, reset]);
+  }, [mode, report, reset]);
 
   // 취소 버튼 클릭
   const handleCancel = useCallback(() => {
@@ -91,26 +91,24 @@ const ReportModal = ({
 
   // 게시글 저장
   const onSubmit = useCallback(
-    async (formData: PostFormData) => {
+    async (formData: ReportFormData) => {
       try {
-        const postData = transformToPostData(formData);
+        const reportData = transformToReportData(formData);
 
-        const dataWithId = mode === 'edit' && post ? { ...postData, id: post.id } : postData;
+        const dataWithId =
+          mode === 'edit' && report ? { ...reportData, id: report.id } : reportData;
 
-        const savedPost = await createOrUpdatePost(dataWithId);
+        const savedReport = await createOrUpdateReport(dataWithId);
 
-        if (mode === 'create' && onPostCreated) {
-          onPostCreated(savedPost);
-        } else if (mode === 'edit' && onPostUpdated) {
-          onPostUpdated(savedPost);
-        }
+        if (mode === 'create' && onReportCreated) onReportCreated(savedReport);
+        else if (mode === 'edit' && onReportUpdated) onReportUpdated(savedReport);
 
         closeModal(modalName);
       } catch (error) {
         alert(`게시글 ${mode === 'create' ? '저장' : '수정'}에 실패했습니다. 다시 시도해주세요.`);
       }
     },
-    [mode, post, modalName, onPostCreated, onPostUpdated, closeModal]
+    [mode, report, modalName, onReportCreated, onReportUpdated, closeModal]
   );
 
   return (
@@ -193,7 +191,7 @@ const ReportModal = ({
                 취소
               </button>
               <button
-                disabled={!isValid}
+                disabled={!isValid || !isDirty}
                 type="submit"
                 className={`${styles.buttonBase} ${styles.submitButton}`}
               >

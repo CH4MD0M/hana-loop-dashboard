@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Post } from '@/types/Post';
-import { fetchPosts } from '@/lib/api';
+import { Report } from '@/types/Report';
+import { fetchReports } from '@/lib/api';
 
 import MainLayout from '@/components/layout/main-layout';
 import ReportStatus from './_components/report-status';
@@ -12,22 +12,24 @@ import ReportList from './_components/report-list';
 import styles from './reports-page.module.css';
 
 export default function ReportsPage() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [reports, setReports] = useState<Report[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const handlePostCreated = (newPost: Post) => {
-    setPosts((prev) => [newPost, ...prev]);
+  const handleReportCreated = (newReport: Report) => {
+    setReports((prev) => [newReport, ...prev]);
   };
 
-  const handlePostUpdated = (updatedPost: Post) => {
-    setPosts((prev) => prev.map((post) => (post.id === updatedPost.id ? updatedPost : post)));
+  const handleReportUpdated = (updatedReport: Report) => {
+    setReports((prev) =>
+      prev.map((report) => (report.id === updatedReport.id ? updatedReport : report))
+    );
   };
 
   useEffect(() => {
-    const loadPosts = async () => {
+    const loadReports = async () => {
       try {
-        const fetchedPosts = await fetchPosts();
-        setPosts(fetchedPosts);
+        const fetchedReports = await fetchReports();
+        setReports(fetchedReports);
       } catch (error) {
         console.error('게시글 로딩 실패:', error);
       } finally {
@@ -35,7 +37,7 @@ export default function ReportsPage() {
       }
     };
 
-    loadPosts();
+    loadReports();
   }, []);
 
   if (isLoading) {
@@ -49,9 +51,9 @@ export default function ReportsPage() {
   return (
     <MainLayout>
       <div className={styles.container}>
-        <ReportStatus reportListData={posts} onPostCreated={handlePostCreated} />
+        <ReportStatus reportListData={reports} onReportCreated={handleReportCreated} />
         <SearchBar />
-        <ReportList reportListData={posts} onPostUpdated={handlePostUpdated} />
+        <ReportList reportListData={reports} onReortUpdated={handleReportUpdated} />
       </div>
     </MainLayout>
   );

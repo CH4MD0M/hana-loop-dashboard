@@ -3,30 +3,30 @@
 import dayjs from 'dayjs';
 import { Clock, FileText, Plus } from 'lucide-react';
 
-import { Post } from '@/types/Post';
+import { Report } from '@/types/Report';
 import { useModalStore } from '@/store/use-modal-store';
 
 import ReportModal from './report-modal';
 import styles from './report-status.module.css';
 
 interface ReportStatusProps {
-  reportListData: Post[];
-  onPostCreated: (newPost: Post) => void;
+  reportListData: Report[];
+  onReportCreated: (newReport: Report) => void;
 }
 
-const ReportStatus = ({ reportListData, onPostCreated }: ReportStatusProps) => {
-  const totalPosts = reportListData.length;
+const ReportStatus = ({ reportListData, onReportCreated }: ReportStatusProps) => {
+  const totalReports = reportListData.length;
 
-  const recentPosts = reportListData.filter((post) => {
-    const postDate = dayjs(post.dateTime);
+  const recentReports = reportListData.filter((report) => {
+    const reportDate = dayjs(report.dateTime);
     const weekAgo = dayjs().subtract(7, 'day');
-    return postDate.isAfter(weekAgo);
+    return reportDate.isAfter(weekAgo);
   }).length;
 
   const { openModal } = useModalStore(['openModal']);
 
   const onCreateReport = () => {
-    openModal('create-post', <ReportModal mode="create" onPostCreated={onPostCreated} />);
+    openModal('create-report', <ReportModal mode="create" onReportCreated={onReportCreated} />);
   };
 
   return (
@@ -35,7 +35,7 @@ const ReportStatus = ({ reportListData, onPostCreated }: ReportStatusProps) => {
         <span className={styles.cardTitle}>전체 보고서</span>
         <div className={`${styles.cardContent} ${styles.totalReportsIcon}`}>
           <FileText size={24} />
-          <p className={styles.cardNumber}>{totalPosts}</p>
+          <p className={styles.cardNumber}>{totalReports}</p>
         </div>
       </div>
 
@@ -43,7 +43,7 @@ const ReportStatus = ({ reportListData, onPostCreated }: ReportStatusProps) => {
         <span className={styles.cardTitle}>최근 7일</span>
         <div className={`${styles.cardContent} ${styles.recentReportsIcon}`}>
           <Clock size={24} />
-          <p className={styles.cardNumber}>{recentPosts}</p>
+          <p className={styles.cardNumber}>{recentReports}</p>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
-import { Post } from '@/types/Post';
+import { Report } from '@/types/Report';
 
-export const posts: Post[] = [
+export const reports: Report[] = [
   {
     id: 'V1StGXR8_Z5jdHi6B-myT',
     title: '2025년 3분기 탄소 배출량 현황 보고서',
