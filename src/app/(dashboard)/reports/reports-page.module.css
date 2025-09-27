@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 4rem auto;
+  padding: 0 2rem;
+}
+
+@media (min-width: 1074px) {
+  .container {
+    max-width: 1000px;
+    padding: 0 1.2rem;
+  }
+}

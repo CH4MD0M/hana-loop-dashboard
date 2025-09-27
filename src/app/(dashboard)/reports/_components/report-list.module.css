@@ -1,0 +1,118 @@
+.container {
+  border-radius: 12px;
+  border: 1px solid #f3f4f6;
+  background-color: white;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Header */
+.header {
+  border-bottom: 1px solid #f3f4f6;
+  background-color: #f9fafb;
+  padding: 1.6rem 2.4rem;
+}
+
+.headerGrid {
+  display: grid;
+  grid-template-columns: 1fr repeat(2, 15%);
+  gap: 2.4rem;
+  text-align: center;
+}
+
+.headerTitle {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.content {
+  border-top: 1px solid #f9fafb;
+}
+
+.content > *:not(:last-child) {
+  border-bottom: 1px solid #f9fafb;
+}
+
+.row {
+  cursor: pointer;
+  padding: 1.6rem 2.4rem;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.row:hover {
+  background-color: #fafafa;
+}
+
+.rowGrid {
+  display: grid;
+  grid-template-columns: 1fr repeat(2, 15%);
+  align-items: center;
+  gap: 2.4rem;
+}
+
+/* 제목 */
+.titleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #111827;
+  transition: color 0.2s ease;
+}
+
+.row:hover .title {
+  color: #2563eb;
+}
+
+.description {
+  margin-top: 4px;
+  font-size: 1.6rem;
+  color: #4b5563;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 작성자 */
+.authorSection {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.avatar {
+  display: flex;
+  height: 3.2rem;
+  width: 3.2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1ebd7c 0%, #0094ff 100%);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+}
+
+.authorName {
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #374151;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 작성일 */
+.dateSection {
+  text-align: center;
+}
+
+.date {
+  font-size: 1.6rem;
+  color: #4b5563;
+}
