@@ -3,6 +3,7 @@
 import { useCallback, useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'react-toastify';
 
 import { ModalId } from '@/types/Modal';
 import { Report } from '@/types/Report';
@@ -72,7 +73,7 @@ const ReportModal = ({
       openModal(
         'confirm-modal',
         <ConfirmModal
-          title="작성 중인 게시글이 있습니다"
+          title="작성 중인 보고서가 있습니다"
           content="작성 중인 내용이 저장되지 않습니다. 정말 나가시겠습니까?"
           closeBtnText="계속 작성"
           confirmBtnText="나가기"
@@ -89,7 +90,7 @@ const ReportModal = ({
     }
   }, [isDirty, openModal, closeModal, modalName]);
 
-  // 게시글 저장
+  // 보고서 저장
   const onSubmit = useCallback(
     async (formData: ReportFormData) => {
       try {
@@ -103,9 +104,12 @@ const ReportModal = ({
         if (mode === 'create' && onReportCreated) onReportCreated(savedReport);
         else if (mode === 'edit' && onReportUpdated) onReportUpdated(savedReport);
 
+        toast.success(`보고서가 ${mode === 'create' ? '저장' : '수정'}되었습니다.`);
         closeModal(modalName);
       } catch (error) {
-        alert(`게시글 ${mode === 'create' ? '저장' : '수정'}에 실패했습니다. 다시 시도해주세요.`);
+        toast.warning(
+          `보고서 ${mode === 'create' ? '저장' : '수정'}에 실패했습니다. 다시 시도해주세요.`
+        );
       }
     },
     [mode, report, modalName, onReportCreated, onReportUpdated, closeModal]
@@ -122,7 +126,7 @@ const ReportModal = ({
               if (e.key === 'Enter') e.preventDefault();
             }}
           >
-            <h2 className={styles.title}>새 게시글 작성</h2>
+            <h2 className={styles.title}>새 보고서 작성</h2>
 
             <div className={styles.fieldsContainer}>
               {/* 회사 선택 */}
@@ -157,7 +161,7 @@ const ReportModal = ({
                     <input
                       {...field}
                       type="text"
-                      placeholder="게시글 제목을 입력하세요"
+                      placeholder="보고서 제목을 입력하세요"
                       className={`${styles.baseInput} ${fieldState.error ? styles.inputError : ''}`}
                     />
                   )}
@@ -172,7 +176,7 @@ const ReportModal = ({
                   renderInput={(field, fieldState) => (
                     <textarea
                       {...field}
-                      placeholder="게시글 내용을 입력하세요"
+                      placeholder="보고서 내용을 입력하세요"
                       className={`${styles.baseInput} ${styles.textarea} ${
                         fieldState.error ? styles.inputError : ''
                       }`}
@@ -195,7 +199,7 @@ const ReportModal = ({
                 type="submit"
                 className={`${styles.buttonBase} ${styles.submitButton}`}
               >
-                {mode === 'create' ? '게시글 작성' : '게시글 수정'}
+                {mode === 'create' ? '보고서 작성' : '보고서 수정'}
               </button>
             </div>
           </form>

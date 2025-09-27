@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
 import { Report } from '@/types/Report';
 import { fetchReports } from '@/lib/api';
 
@@ -31,7 +33,7 @@ export default function ReportsPage() {
         const fetchedReports = await fetchReports();
         setReports(fetchedReports);
       } catch (error) {
-        console.error('게시글 로딩 실패:', error);
+        toast.warning('보고서 목록을 불러오던 중 오류가 발생했습니다.');
       } finally {
         setIsLoading(false);
       }

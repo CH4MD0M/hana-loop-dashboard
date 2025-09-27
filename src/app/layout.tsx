@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 
 import './globals.css';
+
+import ToastProvider from '@/components/toast-provider';
 import { ModalRenderer } from '@/components/modal/modal-renderer';
 
 export const metadata: Metadata = {
@@ -16,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        {children}
+        <ToastProvider>{children}</ToastProvider>
         <ModalRenderer />
       </body>
     </html>
