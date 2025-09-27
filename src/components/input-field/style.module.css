@@ -1,0 +1,58 @@
+.formField {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.formFieldVertical {
+  flex-direction: column;
+}
+
+.formFieldHorizontal {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.formFieldFullWidth {
+  grid-column: 1 / -1;
+}
+
+.fieldTitle {
+  display: block;
+  font-size: 1.4rem;
+}
+
+@media (min-width: 768px) {
+  .fieldTitle {
+    font-weight: 500;
+    font-size: 1.6rem;
+  }
+}
+
+.fieldTitleRequired::after {
+  content: ' *';
+  color: #ef4444;
+}
+
+/* //////////////////////////////////// */
+/* input field */
+.container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.errorContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.2rem;
+  color: #dc2626;
+}
+
+@media (min-width: 768px) {
+  .errorContainer {
+    font-size: 1.4rem;
+  }
+}
