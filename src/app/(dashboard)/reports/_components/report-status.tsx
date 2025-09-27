@@ -6,7 +6,7 @@ import { Clock, FileText, Plus } from 'lucide-react';
 import { Post } from '@/types/Post';
 import { useModalStore } from '@/store/use-modal-store';
 
-import CreatePostModal from './create-report-modal';
+import ReportModal from './report-modal';
 import styles from './report-status.module.css';
 
 interface ReportStatusProps {
@@ -26,7 +26,7 @@ const ReportStatus = ({ reportListData, onPostCreated }: ReportStatusProps) => {
   const { openModal } = useModalStore(['openModal']);
 
   const onCreateReport = () => {
-    openModal('create-post', <CreatePostModal onPostCreated={onPostCreated} />);
+    openModal('create-post', <ReportModal mode="create" onPostCreated={onPostCreated} />);
   };
 
   return (
