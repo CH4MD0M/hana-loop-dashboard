@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { SyncLoader } from 'react-spinners';
 
 import { Report } from '@/types/Report';
 import { fetchReports } from '@/lib/api';
@@ -45,7 +46,9 @@ export default function ReportsPage() {
   if (isLoading) {
     return (
       <MainLayout>
-        <div>게시글을 불러오는 중...</div>
+        <div className={styles.loadingContainer}>
+          <SyncLoader color="#67d2a5" size={20} />
+        </div>
       </MainLayout>
     );
   }
