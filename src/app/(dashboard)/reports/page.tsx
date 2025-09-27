@@ -46,7 +46,7 @@ export default function ReportsPage() {
   if (isLoading) {
     return (
       <MainLayout>
-        <div className={styles.loadingContainer}>
+        <div className="loadingContainer">
           <SyncLoader color="#67d2a5" size={20} />
         </div>
       </MainLayout>
