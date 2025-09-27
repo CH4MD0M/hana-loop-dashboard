@@ -15,6 +15,14 @@ export default function ReportsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const handlePostCreated = (newPost: Post) => {
+    setPosts((prev) => [newPost, ...prev]);
+  };
+
+  const handlePostUpdated = (updatedPost: Post) => {
+    setPosts((prev) => prev.map((post) => (post.id === updatedPost.id ? updatedPost : post)));
+  };
+
   useEffect(() => {
     const loadPosts = async () => {
       try {
@@ -30,10 +38,6 @@ export default function ReportsPage() {
     loadPosts();
   }, []);
 
-  const handlePostCreated = (newPost: Post) => {
-    setPosts((prev) => [newPost, ...prev]);
-  };
-
   if (isLoading) {
     return (
       <MainLayout>
@@ -47,7 +51,7 @@ export default function ReportsPage() {
       <div className={styles.container}>
         <ReportStatus reportListData={posts} onPostCreated={handlePostCreated} />
         <SearchBar />
-        <ReportList reportListData={posts} />
+        <ReportList reportListData={posts} onPostUpdated={handlePostUpdated} />
       </div>
     </MainLayout>
   );

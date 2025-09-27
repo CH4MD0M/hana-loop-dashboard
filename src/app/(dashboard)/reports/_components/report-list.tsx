@@ -1,14 +1,21 @@
 import dayjs from 'dayjs';
 
 import { Post } from '@/types/Post';
+
+import { useModalStore } from '@/store/use-modal-store';
 import { getCompanyName } from '@/utils/report-list-utils';
+
+import ReportModal from './report-modal';
 import styles from './report-list.module.css';
 
 interface ReportListProps {
   reportListData: Post[];
+  onPostUpdated: (updatedPost: Post) => void;
 }
 
-const ReportList = ({ reportListData }: ReportListProps) => {
+const ReportList = ({ reportListData, onPostUpdated }: ReportListProps) => {
+  const { openModal } = useModalStore(['openModal']);
+
   const formatDate = (dateString: string) => {
     const date = dayjs(dateString);
     return date.format('YY. MM. DD');
@@ -16,6 +23,11 @@ const ReportList = ({ reportListData }: ReportListProps) => {
 
   const getInitial = (name: string) => {
     return name.charAt(0);
+  };
+
+  const handleEditClick = (post: Post, event: React.MouseEvent) => {
+    event.stopPropagation();
+    openModal('edit-post', <ReportModal mode="edit" post={post} onPostUpdated={onPostUpdated} />);
   };
 
   return (
@@ -26,6 +38,7 @@ const ReportList = ({ reportListData }: ReportListProps) => {
           <div className={styles.headerTitle}>제목</div>
           <div className={styles.headerTitle}>작성자</div>
           <div className={styles.headerTitle}>작성일</div>
+          <div className={styles.headerTitle}>관리</div>
         </div>
       </div>
 
@@ -52,6 +65,13 @@ const ReportList = ({ reportListData }: ReportListProps) => {
                 {/* 작성일 */}
                 <div className={styles.dateSection}>
                   <span className={styles.date}>{formatDate(post.dateTime)}</span>
+                </div>
+
+                {/* 관리 */}
+                <div className={styles.editSection}>
+                  <button onClick={(e) => handleEditClick(post, e)} className={styles.editButton}>
+                    수정
+                  </button>
                 </div>
               </div>
             </div>

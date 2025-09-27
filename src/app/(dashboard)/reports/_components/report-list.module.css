@@ -14,7 +14,7 @@
 
 .headerGrid {
   display: grid;
-  grid-template-columns: 1fr repeat(2, 15%);
+  grid-template-columns: 1fr repeat(3, 15%);
   gap: 2.4rem;
   text-align: center;
 }
@@ -47,7 +47,7 @@
 
 .rowGrid {
   display: grid;
-  grid-template-columns: 1fr repeat(2, 15%);
+  grid-template-columns: 1fr repeat(3, 15%);
   align-items: center;
   gap: 2.4rem;
 }
@@ -116,4 +116,34 @@
 .date {
   font-size: 1.6rem;
   color: #4b5563;
+}
+
+.editSection {
+  text-align: center;
+}
+
+.editButton {
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background-color: white;
+  padding: 6px 12px;
+  font-size: 12px;
+  white-space: nowrap;
+  color: #374151;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  cursor: pointer;
+  outline: none;
+}
+
+.editButton:hover {
+  border-color: #d1d5db;
+  background-color: #f9fafb;
+}
+
+@media (min-width: 768px) {
+  .editButton {
+    font-size: 14px;
+  }
 }

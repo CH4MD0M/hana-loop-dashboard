@@ -1,17 +1,18 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { ModalId } from '@/types/Modal';
 import { Post } from '@/types/Post';
 import { useModalStore } from '@/store/use-modal-store';
 
 import { companies } from '@/lib/data/companies';
 import { createOrUpdatePost } from '@/lib/api';
 import {
-  createPostSchema,
-  CreatePostFormData,
+  postFormSchema,
+  PostFormData,
   getDefaultPostValues,
   transformToPostData,
 } from '@/lib/schemas/reports';
@@ -21,26 +22,49 @@ import { ConfirmModal } from '@/components/modal/confirm-modal';
 import FormField from '@/components/input-field/form-field';
 import InputField from '@/components/input-field/input-field';
 
-import styles from './create-report-modal.module.css';
+import styles from './report-modal.module.css';
 
-interface CreatePostModalProps {
+interface ReportModalProps {
+  mode: 'create' | 'edit';
+  post?: Post;
   onPostCreated?: (newPost: Post) => void;
+  onPostUpdated?: (updatedPost: Post) => void;
   closeOnlyByAction?: boolean;
 }
 
-const CreatePostModal = ({ onPostCreated, closeOnlyByAction = true }: CreatePostModalProps) => {
+const ReportModal = ({
+  mode,
+  post,
+  onPostCreated,
+  onPostUpdated,
+  closeOnlyByAction = true,
+}: ReportModalProps) => {
   const { openModal, closeModal } = useModalStore(['openModal', 'closeModal']);
+  const modalName: ModalId = mode === 'create' ? 'create-post' : 'edit-post';
 
-  const methods = useForm<CreatePostFormData>({
-    resolver: zodResolver(createPostSchema),
+  const methods = useForm<PostFormData>({
+    resolver: zodResolver(postFormSchema),
     defaultValues: getDefaultPostValues(),
     mode: 'onChange',
   });
 
   const {
     handleSubmit,
+    reset,
     formState: { isValid, isDirty },
   } = methods;
+
+  useEffect(() => {
+    if (mode === 'edit' && post) {
+      reset({
+        resourceUid: post.resourceUid,
+        title: post.title,
+        content: post.content,
+      });
+    } else if (mode === 'create') {
+      reset(getDefaultPostValues());
+    }
+  }, [mode, post, reset]);
 
   // 취소 버튼 클릭
   const handleCancel = useCallback(() => {
@@ -55,39 +79,51 @@ const CreatePostModal = ({ onPostCreated, closeOnlyByAction = true }: CreatePost
           onClose={() => closeModal('confirm-modal')}
           onConfirm={() => {
             closeModal('confirm-modal');
-            closeModal('create-post');
+            closeModal(modalName);
           }}
           closeOnlyByAction={true}
         />
       );
     } else {
-      closeModal('create-post');
+      closeModal(modalName);
     }
-  }, [isDirty, openModal, closeModal]);
+  }, [isDirty, openModal, closeModal, modalName]);
 
   // 게시글 저장
   const onSubmit = useCallback(
-    async (formData: CreatePostFormData) => {
+    async (formData: PostFormData) => {
       try {
         const postData = transformToPostData(formData);
 
-        const createdPost = await createOrUpdatePost(postData);
+        const dataWithId = mode === 'edit' && post ? { ...postData, id: post.id } : postData;
 
-        if (onPostCreated) onPostCreated(createdPost);
+        const savedPost = await createOrUpdatePost(dataWithId);
 
-        closeModal('create-post');
+        if (mode === 'create' && onPostCreated) {
+          onPostCreated(savedPost);
+        } else if (mode === 'edit' && onPostUpdated) {
+          onPostUpdated(savedPost);
+        }
+
+        closeModal(modalName);
       } catch (error) {
-        alert('게시글 저장에 실패했습니다. 다시 시도해주세요.');
+        alert(`게시글 ${mode === 'create' ? '저장' : '수정'}에 실패했습니다. 다시 시도해주세요.`);
       }
     },
-    [closeModal]
+    [mode, post, modalName, onPostCreated, onPostUpdated, closeModal]
   );
 
   return (
     <>
-      <BaseModal name="create-post" closeOnlyByAction={closeOnlyByAction}>
+      <BaseModal name={modalName} closeOnlyByAction={closeOnlyByAction}>
         <FormProvider {...methods}>
-          <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <form
+            className={styles.form}
+            onSubmit={handleSubmit(onSubmit)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') e.preventDefault();
+            }}
+          >
             <h2 className={styles.title}>새 게시글 작성</h2>
 
             <div className={styles.fieldsContainer}>
@@ -161,7 +197,7 @@ const CreatePostModal = ({ onPostCreated, closeOnlyByAction = true }: CreatePost
                 type="submit"
                 className={`${styles.buttonBase} ${styles.submitButton}`}
               >
-                게시글 작성
+                {mode === 'create' ? '게시글 작성' : '게시글 수정'}
               </button>
             </div>
           </form>
@@ -171,4 +207,4 @@ const CreatePostModal = ({ onPostCreated, closeOnlyByAction = true }: CreatePost
   );
 };
 
-export default CreatePostModal;
+export default ReportModal;
