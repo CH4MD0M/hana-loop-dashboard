@@ -1,0 +1,80 @@
+.headerContainer {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  min-height: 4.8rem;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: white;
+  padding: 1.2rem 1.6rem;
+}
+
+@media (min-width: 640px) {
+  .headerContainer {
+    padding: 1.6rem 1.2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .headerContainer {
+    min-height: 5.2rem;
+    padding: 1.6rem;
+  }
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+@media (min-width: 640px) {
+  .leftSection {
+    gap: 2rem;
+  }
+}
+
+.menuButton {
+  border-radius: 6px;
+  padding: 0.4rem;
+  transition: all 0.2s;
+}
+
+.menuButton:hover {
+  background-color: #f3f4f6;
+}
+
+.menuIcon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+@media (min-width: 640px) {
+  .menuIcon {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.logoText {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+@media (min-width: 640px) {
+  .logoText {
+    font-size: 1.8rem;
+  }
+}
