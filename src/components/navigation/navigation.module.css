@@ -2,7 +2,7 @@
   display: block;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1074px) {
   .mobileContainer {
     display: none;
   }
