@@ -1,16 +1,20 @@
 'use client';
 
-import { Post } from '@/types/Post';
 import dayjs from 'dayjs';
 import { Clock, FileText, Plus } from 'lucide-react';
 
+import { Post } from '@/types/Post';
+import { useModalStore } from '@/store/use-modal-store';
+
+import CreatePostModal from './create-report-modal';
 import styles from './report-status.module.css';
 
 interface ReportStatusProps {
   reportListData: Post[];
+  onPostCreated: (newPost: Post) => void;
 }
 
-const ReportStatus = ({ reportListData }: ReportStatusProps) => {
+const ReportStatus = ({ reportListData, onPostCreated }: ReportStatusProps) => {
   const totalPosts = reportListData.length;
 
   const recentPosts = reportListData.filter((post) => {
@@ -19,7 +23,11 @@ const ReportStatus = ({ reportListData }: ReportStatusProps) => {
     return postDate.isAfter(weekAgo);
   }).length;
 
-  const onCreateReport = () => {};
+  const { openModal } = useModalStore(['openModal']);
+
+  const onCreateReport = () => {
+    openModal('create-post', <CreatePostModal onPostCreated={onPostCreated} />);
+  };
 
   return (
     <div className={styles.container}>

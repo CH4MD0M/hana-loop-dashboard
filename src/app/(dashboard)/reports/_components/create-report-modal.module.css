@@ -1,0 +1,122 @@
+.form {
+  padding: 12px;
+}
+
+@media (min-width: 768px) {
+  .form {
+    max-width: 90dvw;
+    min-width: 80rem;
+    padding: 2.4rem;
+  }
+}
+
+.title {
+  margin-bottom: 2.4rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 2.4rem;
+  }
+}
+
+.fieldsContainer {
+  margin-bottom: 2.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .fieldsContainer {
+    margin-bottom: 4rem;
+    gap: 3.6rem;
+  }
+}
+
+/* Base Input */
+.baseInput {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  padding: 1.2rem;
+  font-size: 1.6rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.baseInput:focus {
+  border-color: #0094ff;
+}
+
+.inputError {
+  border-color: #dc2626;
+}
+
+/* Select */
+.select {
+  background-color: white;
+}
+
+/* Textarea */
+.textarea {
+  min-height: 20rem;
+  resize: vertical;
+  font-size: 1.4rem;
+}
+
+@media (min-width: 768px) {
+  .textarea {
+    font-size: 1.6rem;
+  }
+}
+
+/* Button */
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.2rem;
+}
+
+.buttonBase {
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 1.2rem 2.4rem;
+  font-size: 1.4rem;
+  outline: none;
+  border: none;
+  transition: opacity 0.2s ease;
+}
+
+@media (min-width: 768px) {
+  .buttonBase {
+    font-size: 1.6rem;
+  }
+}
+
+.cancelButton {
+  border: 1px solid #ddd;
+  background-color: white;
+  color: inherit;
+}
+
+.cancelButton:hover {
+  background-color: #f9fafb;
+}
+
+.submitButton {
+  background-color: #0094ff;
+  color: white;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #0084e6;
+}
+
+.submitButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
