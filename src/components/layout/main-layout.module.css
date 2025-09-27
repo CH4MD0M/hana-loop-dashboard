@@ -1,0 +1,13 @@
+.layoutContainer {
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+.contentWrapper {
+  display: flex;
+  min-height: 100%;
+}
+
+.mainContent {
+  flex: 1;
+}
