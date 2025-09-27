@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
-import { Post } from '@/types/Post';
 
+import { Post } from '@/types/Post';
+import { getCompanyName } from '@/utils/report-list-utils';
 import styles from './report-list.module.css';
 
 interface ReportListProps {
@@ -30,28 +31,32 @@ const ReportList = ({ reportListData }: ReportListProps) => {
 
       {/* Content */}
       <div className={styles.content}>
-        {reportListData.map((post) => (
-          <div key={post.id} className={styles.row}>
-            <div className={styles.rowGrid}>
-              {/* 제목 */}
-              <div className={styles.titleSection}>
-                <h3 className={styles.title}>{post.title}</h3>
-                <p className={styles.description}>{post.content}</p>
-              </div>
+        {reportListData.map((post) => {
+          const companyName = getCompanyName(post.resourceUid);
 
-              {/* 작성자 */}
-              <div className={styles.authorSection}>
-                <div className={styles.avatar}>{getInitial(post.resourceUid)}</div>
-                <span className={styles.authorName}>{post.resourceUid}</span>
-              </div>
+          return (
+            <div key={post.id} className={styles.row}>
+              <div className={styles.rowGrid}>
+                {/* 제목 */}
+                <div className={styles.titleSection}>
+                  <h3 className={styles.title}>{post.title}</h3>
+                  <p className={styles.description}>{post.content}</p>
+                </div>
 
-              {/* 작성일 */}
-              <div className={styles.dateSection}>
-                <span className={styles.date}>{formatDate(post.dateTime)}</span>
+                {/* 작성자 */}
+                <div className={styles.authorSection}>
+                  <div className={styles.avatar}>{getInitial(companyName)}</div>
+                  <span className={styles.authorName}>{companyName}</span>
+                </div>
+
+                {/* 작성일 */}
+                <div className={styles.dateSection}>
+                  <span className={styles.date}>{formatDate(post.dateTime)}</span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
