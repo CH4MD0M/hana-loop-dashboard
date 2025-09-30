@@ -1,36 +1,199 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 탄소 배출 대시보드
 
-## Getting Started
+### 🚀 배포 링크
 
-First, run the development server:
+[https://hana-loop-dashboard.vercel.app/](https://hana-loop-dashboard.vercel.app/)
+
+### 로컬 실행
 
 ```bash
-npm run dev
-# or
+yarn install
+
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+브라우저에서 `http://localhost:3005`을 열어주세요.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<br/><br/>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# 📋 과제 해석 및 설계
 
-## Learn More
+## 1. 데이터 모델 확장
 
-To learn more about Next.js, take a look at the following resources:
+과제에서 제공된 데이터 모델이 최소한의 구조만 포함하고 있어 다음과 같이 타입을 추가, 수정했습니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Company
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **industry:** 업종 정보 (철강/용접, 정밀화학 등)
+  - 업종별 비교 분석을 위함
+- **monthlyQuota:** 월별 배출 할당량 (tCO2eq 단위)
+  - 목표 대비 실적 평가를 위함
 
-## Deploy on Vercel
+또한 각 사업장의 규모는 연간 1만~10만 톤 수준으로 설정하여 중견 및 중소 제조업체의 실제 배출 규모를 반영했습니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<br/>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### GhgEmission
+
+- 스코프 1: 직접 배출 (도시가스, 경유, 프로판, 국내무연탄, 실내등유)
+- 스코프 2: 간접 배출 (전력)
+
+스코프 3(공급망 배출)은 **데이터의 복잡성**으로 인해 1차 구현에서 제외했습니다.
+
+<br/>
+
+### Post타입 확장
+
+과제에서 제시된 `Post` 타입은 일반적인 게시물을 연상시키지만, 탄소 배출 대시보드의 맥락에서 명확성을 위해 `Report`로 타입명을 변경했습니다.
+
+<br/>
+
+## 2. 조직 구조 해석
+
+"companies and affiliates"를 **동일 그룹 내 사업장(Sites)** 으로 해석했습니다.
+
+- **사업장:** 하나 중공업, 하나 화학, 하나 식품, 하나 전자
+
+각 사업장은 독립적으로 배출량을 관리하며, 그룹 차원의 통합 뷰도 제공할 수 있도록 구현했습니다.
+
+<br/><br/>
+
+# ⚙️ 주요 기능 설명
+
+## 우수 사업장
+
+### 달성률 계산 방식
+
+달성률 = (실제 배출량 / 할당된 목표량) × 100%
+
+<br/>
+
+### 평가 기준 및 표시
+
+- **100% 이하** (목표 달성)
+  - 배출량이 할당량 이내로 관리됨
+  - 녹색 배지로 표시
+
+- **100% 초과** (목표 미달성)
+  - 배출량이 할당량을 초과함
+  - 적색 배지로 표시
+
+<br/>
+
+## 보고서 페이지
+
+- 보고서 생성 및 수정 폼의 데이터 검증을 `react-hook-form`과 `zod`로 구현했습니다.
+
+- createPortal + zustand로 구현한 모달 컴포넌트로 추가, 수정 기능을 구현했습니다. 이는 다음과 같은 이점이 있습니다.
+  - 부모 컴포넌트의 overflow나 z-index 제약에서 벗어나 항상 최상단에 표시.
+  - 별도의 DOM 트리에 위치하므로 불필요한 리렌더링을 방지.
+
+<br/>
+
+### zustand 유틸 함수 구현
+
+zustand의 shallow 비교를 활용한 커스텀 유틸 함수를 작성하여 선택적 상태 구독을 구현했습니다. <br/> 필요한 상태만 명시적으로 선택하고, 실제로 선택된 값이 변경될 때만 리렌더링이 발생하도록 했습니다.
+
+```ts
+import type { StoreApi } from 'zustand';
+import { shallow } from 'zustand/shallow';
+import type { UseBoundStoreWithEqualityFn } from 'zustand/traditional';
+
+export type StoreWithShallow<T> = <K extends keyof T>(
+  keys: K[],
+  withEqualityFn?: boolean
+) => Pick<T, K>;
+
+export const useStoreWithShallow = <T, K extends keyof T>(
+  storeWithEqualityFn: UseBoundStoreWithEqualityFn<StoreApi<T>>,
+  keys: K[],
+  withEqualityFn = true
+): Pick<T, K> =>
+  storeWithEqualityFn<T>(
+    (state) => {
+      const resultState = keys.reduce(
+        (prev, key) => ({
+          ...prev,
+          [key]: state[key],
+        }),
+        {} as T
+      );
+
+      return resultState;
+    },
+    withEqualityFn ? shallow : undefined
+  );
+```
+
+<br/>
+
+### 변경사항 추적 및 확인 모달
+
+폼의 `isDirty` 상태를 활용하여 사용자가 입력 중인 내용이 있을 때 취소 버튼을 누르면 확인 모달을 띄웁니다.
+
+입력이 없는 경우에는 불필요한 확인 단계 없이 바로 모달을 닫아 사용자 경험을 해치지 않도록 구현했습니다.
+
+<br/>
+
+### 에러처리
+
+에러 발생 시 모달을 즉시 닫지 않고 현재 입력된 내용을 유지한 채로 `react-toastify`를 통해 경고 메시지를 표시했습니다.
+
+성공 시에는 성공 메시지 출력과 함께 모달을 닫고, 부모 컴포넌트의 콜백(`onReportCreated`, `onReportUpdated`)을 호출하여 목록을 즉시 업데이트합니다.
+
+<br/><br/>
+
+# 🚧 미구현 기능
+
+### Scope 3 배출량 관리
+
+공급망 전반의 간접 배출을 의미하는 Scope 3은 과제 진행 중 조사한 결과, 원자재 운송, 제품 유통, 직원 출퇴근, 폐기물 처리 등 15개 카테고리로 나뉘며 각각 다른 측정 방법론을 적용해야 한다는 것을 알게 되었습니다. <br/>
+또한 협력업체와 고객사의 데이터를 수집해야 하는 복잡한 영역으로, 정확한 구현을 위해서는 추가적인 학습과 도메인 지식이 필요하다고 판단하여 1차 구현에서 제외했습니다.
+
+<br/>
+
+### 탄소세 금액 계산
+
+과제 목적에서 "탄소세 계획"이 언급되었으나, 탄소세 체계에 대한 도메인 지식 부족과 시간 제약으로 금액 계산 기능은 구현하지 않았습니다.<br/>
+탄소세는 국가별, 산업별로 계산 방식이 다르다는 것을 알게 되었고, 정확한 구현을 위해서는 추가 학습이 필요했습니다.
+
+대신 목표 달성률 시각화를 통해 할당량 초과 여부를 보여줌으로써, 잠재적인 탄소세 부담을 간접적으로 파악할 수 있도록 구현했습니다.
+
+<br/>
+
+### 고급 필터링 및 검색
+
+시간 제약으로 인해 기본적인 연도 선택과 사업장 필터링만 구현했습니다. 다음과 같은 고급 필터링 기능이 필요합니다.
+
+- 커스텀 날짜 범위 선택 (특정 분기, 반기, 사용자 정의 기간)
+- 연료원별 필터링 및 비교 분석
+- 다중 사업장 동시 비교
+
+<br/>
+
+### 데이터 내보내기
+
+배출량 데이터를 CSV, Excel, PDF 형식으로 내보내는 기능은 시각화와 분석 기능에 비해 우선순위가 낮다고 판단했습니다.
+
+<br/>
+
+### 보고서 기능
+
+보고서 관리 페이지에서 다음 기능들은 시간 제약으로 제외했습니다.
+
+- 페이지네이션 또는 무한 스크롤
+- 제목/내용 기반 검색
+- 날짜 범위, 사업장별 필터링
+- 파일 첨부 기능
+
+<br/><br/>
+
+# ⏱️ 소요 시간
+
+**총 작업 시간:** 약 12시간
+
+- 데이터 모델 설계 및 시드 데이터 생성: 1시간
+- UI/UX 설계 및 레이아웃 구성: 2시간
+- 리포트 페이지 구현: 4 시간
+- 차트 컴포넌트 구현: 3시간
+- 문서화: 2시간
