@@ -54,7 +54,6 @@
   background-color: #f8f9ff;
 }
 
-/* 반응형 */
 @media (max-width: 768px) {
   .container {
     padding: 16px;

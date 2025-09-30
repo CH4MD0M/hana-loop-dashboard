@@ -8,19 +8,6 @@
   padding: 1.2rem 1.6rem;
 }
 
-@media (min-width: 640px) {
-  .headerContainer {
-    padding: 1.6rem 1.2rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .headerContainer {
-    min-height: 5.2rem;
-    padding: 1.6rem;
-  }
-}
-
 .headerContent {
   display: flex;
   align-items: center;
@@ -31,12 +18,6 @@
   display: flex;
   align-items: center;
   gap: 1.6rem;
-}
-
-@media (min-width: 640px) {
-  .leftSection {
-    gap: 2rem;
-  }
 }
 
 .menuButton {
@@ -54,13 +35,6 @@
   height: 1.6rem;
 }
 
-@media (min-width: 640px) {
-  .menuIcon {
-    width: 2rem;
-    height: 2rem;
-  }
-}
-
 .logoSection {
   display: flex;
   align-items: center;
@@ -74,7 +48,27 @@
 }
 
 @media (min-width: 640px) {
+  .headerContainer {
+    padding: 1.6rem 1.2rem;
+  }
+
+  .leftSection {
+    gap: 2rem;
+  }
+
+  .menuIcon {
+    width: 2rem;
+    height: 2rem;
+  }
+
   .logoText {
     font-size: 1.8rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .headerContainer {
+    min-height: 5.2rem;
+    padding: 1.6rem;
   }
 }

@@ -6,12 +6,6 @@
   backdrop-filter: blur(4px);
 }
 
-@media (min-width: 1074px) {
-  .backdrop {
-    display: none;
-  }
-}
-
 .sidebarContainer {
   position: fixed;
   top: 0;
@@ -22,21 +16,6 @@
   border-right: 1px solid #e5e7eb;
   background-color: white;
   transition: transform 0.3s ease-in-out;
-}
-
-@media (min-width: 640px) {
-  .sidebarContainer {
-    width: 26rem;
-  }
-}
-
-@media (min-width: 1074px) {
-  .sidebarContainer {
-    position: static;
-    z-index: auto;
-    min-height: calc(100dvh - 61px);
-    transform: translateX(0) !important;
-  }
 }
 
 .sidebarOpen {
@@ -56,19 +35,6 @@
   padding-right: 1.6rem;
 }
 
-@media (min-width: 640px) {
-  .headerContainer {
-    height: 5.2rem;
-    padding: 0 2rem;
-  }
-}
-
-@media (min-width: 1074px) {
-  .headerContainer {
-    display: none;
-  }
-}
-
 .closeButton {
   border-radius: 6px;
   padding: 0.4rem;
@@ -81,13 +47,6 @@
 .closeIcon {
   width: 1.6rem;
   height: 1.6rem;
-}
-
-@media (min-width: 640px) {
-  .closeIcon {
-    width: 2rem;
-    height: 2rem;
-  }
 }
 
 .navigation {
@@ -109,13 +68,6 @@
   font-size: 1.4rem;
   font-weight: 500;
   transition: colors 0.2s;
-}
-
-@media (min-width: 640px) {
-  .menuLink {
-    padding: 1.2rem 0;
-    font-size: 16px;
-  }
 }
 
 .menuLinkActive {
@@ -140,8 +92,44 @@
 }
 
 @media (min-width: 640px) {
+  .sidebarContainer {
+    width: 26rem;
+  }
+
+  .headerContainer {
+    height: 5.2rem;
+    padding: 0 2rem;
+  }
+
+  .closeIcon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .menuLink {
+    padding: 1.2rem 0;
+    font-size: 16px;
+  }
+
   .menuIcon {
     width: 2rem;
     height: 2rem;
+  }
+}
+
+@media (min-width: 1074px) {
+  .backdrop {
+    display: none;
+  }
+
+  .sidebarContainer {
+    position: static;
+    z-index: auto;
+    min-height: calc(100dvh - 61px);
+    transform: translateX(0) !important;
+  }
+
+  .headerContainer {
+    display: none;
   }
 }
