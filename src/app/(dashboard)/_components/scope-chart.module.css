@@ -1,0 +1,45 @@
+.scopeChartContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.scopeLegend {
+  display: flex;
+  justify-content: center;
+  gap: 1.6rem;
+  width: 100%;
+}
+
+.legendItem {
+  display: flex;
+
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.legendColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legendText {
+  font-size: 1.4rem;
+  white-space: nowrap;
+  color: #374151;
+}
+
+@media (min-width: 640px) {
+  .responsiveContainer {
+    margin-bottom: -50px;
+  }
+}
+
+@media (min-width: 1074px) {
+  .responsiveContainer {
+    margin-bottom: -100px;
+  }
+}
