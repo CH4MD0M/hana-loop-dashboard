@@ -1,0 +1,32 @@
+.card {
+  height: fit-content;
+}
+
+.totalEmissionsValue {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.4rem;
+}
+
+.totalEmissionsUnit {
+  font-size: 1.4rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.section {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+@media (min-width: 768px) {
+  .totalEmissionsValue {
+    font-size: 4rem;
+  }
+
+  .totalEmissionsUnit {
+    font-size: 1.6rem;
+  }
+}
