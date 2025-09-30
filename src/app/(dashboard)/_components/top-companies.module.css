@@ -1,0 +1,84 @@
+.rankingList {
+  display: flex;
+  flex-direction: column;
+  padding: 1.2rem;
+  gap: 2.4rem;
+}
+
+.rankingItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.rankingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rankingInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.rank {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #6b7280;
+  min-width: 2.4rem;
+}
+
+.companyName {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.achievementGood {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.achievementBad {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ef4444;
+}
+
+.barContainer {
+  width: 100%;
+  height: 0.8rem;
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.barGood {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.barBad {
+  height: 100%;
+  background: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.emissionInfo {
+  font-size: 1rem;
+  color: #6b7280;
+  text-align: right;
+}
+
+@media (min-width: 1200px) {
+  .rankingList {
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+}
