@@ -1,0 +1,115 @@
+.headerControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.baseYear {
+  font-size: 16px;
+  color: #666;
+}
+
+.controls {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.controls button,
+.yearSelector select {
+  border: 1px solid #e5e7eb;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.controls button {
+  border-radius: 6px;
+  padding: 0.8rem 1.2rem;
+
+  &:hover {
+    background: #f0fdf7;
+    border-color: #1ebd7c;
+    color: #166c47;
+  }
+
+  &.active {
+    background: #1ebd7c;
+    color: white;
+    border-color: #1ebd7c;
+
+    &:hover {
+      background: #16a367;
+      border-color: #16a367;
+    }
+  }
+}
+
+.yearSelector {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  span,
+  select {
+    font-size: 1.4rem;
+  }
+
+  select {
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+
+    &:hover {
+      border-color: #1ebd7c;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #1ebd7c;
+      box-shadow: 0 0 0 2px rgba(30, 189, 124, 0.1);
+    }
+  }
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.4rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  min-width: 200px;
+  overflow: hidden;
+
+  button {
+    display: block;
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: #f0fdf7;
+      color: #166c47;
+    }
+
+    &.active {
+      background: #1ebd7c;
+      color: white;
+
+      &:hover {
+        background: #16a367;
+      }
+    }
+  }
+}
