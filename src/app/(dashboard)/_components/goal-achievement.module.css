@@ -1,0 +1,27 @@
+.headerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+
+  > * {
+    margin: 0;
+  }
+}
+
+.achievementSummary {
+  text-align: center;
+}
+
+.currentAchievement {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.achievementGood {
+  color: #10b981;
+}
+
+.achievementBad {
+  color: #ef4444;
+}
