@@ -12,7 +12,7 @@ yarn install
 yarn dev
 ```
 
-브라우저에서 `http://localhost:3005`을 열어주세요.
+브라우저에서 `http://localhost:3005`를 열어주세요.
 
 <br/><br/>
 
@@ -62,6 +62,8 @@ yarn dev
 
 ## 우수 사업장
 
+선택된 연도의 달성률을 기준으로 **낮은 순서대로** 정렬하여 사업장을 표시합니다.
+
 ### 달성률 계산 방식
 
 달성률 = (실제 배출량 / 할당된 목표량) × 100%
@@ -92,7 +94,7 @@ yarn dev
 
 ### zustand 유틸 함수 구현
 
-zustand의 shallow 비교를 활용한 커스텀 유틸 함수를 작성하여 선택적 상태 구독을 구현했습니다. <br/> 필요한 상태만 명시적으로 선택하고, 실제로 선택된 값이 변경될 때만 리렌더링이 발생하도록 했습니다.
+zustand의 shallow 비교를 활용한 커스텀 유틸 함수를 작성하여 선택적 상태 구독을 구현했습니다. <br/> 필요한 상태만 명시적으로 선택하고, 실제로 선택된 값이 변경될 때만 렌더링이 발생하도록 했습니다.
 
 ```ts
 import type { StoreApi } from 'zustand';
@@ -139,7 +141,7 @@ export const useStoreWithShallow = <T, K extends keyof T>(
 
 에러 발생 시 모달을 즉시 닫지 않고 현재 입력된 내용을 유지한 채로 `react-toastify`를 통해 경고 메시지를 표시했습니다.
 
-성공 시에는 성공 메시지 출력과 함께 모달을 닫고, 부모 컴포넌트의 콜백(`onReportCreated`, `onReportUpdated`)을 호출하여 목록을 즉시 업데이트합니다.
+성공 시에는 성공 메시지 출력과 함께 모달을 닫고, 부모 컴포넌트의 콜백(`onReportCreated`, `onReportUpdated`)을 호출하여 목록을 즉시 업데이트하도록 구현했습니다.
 
 <br/><br/>
 
